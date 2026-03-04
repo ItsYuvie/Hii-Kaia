@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Kaia 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8445a;
+    --rose-light: #f7b8c2;
+    --rose-deep: #c0253a;
+    --blush: #fde8ec;
+    --champagne: #f9f0e6;
+    --gold: #c9956b;
+    --gold-light: #e8c9a8;
+    --cream: #fdf6f0;
+    --burgundy: #6b1a2a;
+    --text: #2a1018;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  .petal {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .scene {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .screen { display: none; width: 100%; max-width: 680px; margin: 0 auto; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+  .envelope-wrapper {
+    animation: floatIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+    width: 100%;
+  }
+
+  @keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 80px rgba(232,68,90,0.15), 0 4px 20px rgba(0,0,0,0.06);
+    padding: 60px 50px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(232,68,90,0.1);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rose-light), var(--rose), var(--gold), var(--rose));
+    background-size: 200%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+  }
+
+  .hearts-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-size: 22px;
+  }
+
+  .heart { animation: heartbeat 1.4s ease-in-out infinite; }
+  .heart:nth-child(2) { animation-delay: 0.2s; }
+  .heart:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+  }
+
+  .label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 12px;
+  }
+
+  .main-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .main-heading span { color: var(--rose); font-style: italic; }
+
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold);
+    font-style: italic;
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+  }
+
+  .profile-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--blush);
+    border: 1.5px solid var(--rose-light);
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin-bottom: 22px;
+    font-size: 12px;
+    color: var(--burgundy);
+    font-weight: 500;
+  }
+
+  .profile-chip .dot {
+    width: 8px; height: 8px;
+    background: var(--rose);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* Compact 3-column talent grid */
+  .talent-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 6px;
+    width: 100%;
+  }
+
+  .talent-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .talent-card {
+    background: var(--blush);
+    border: 1.5px solid rgba(232,68,90,0.13);
+    border-radius: 10px;
+    padding: 9px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+  }
+
+  .talent-card:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 16px rgba(232,68,90,0.13);
+  }
+
+  .modeling-card {
+    background: linear-gradient(135deg, #f0e6f0, #fde8ec);
+    border-color: rgba(107,26,42,0.15);
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .talent-icon { font-size: 18px; margin-bottom: 3px; }
+  .modeling-card .talent-icon { margin-bottom: 0; font-size: 16px; }
+
+  .talent-label {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--text);
+    margin-bottom: 1px;
+    line-height: 1.3;
+  }
+
+  .talent-sub {
+    font-size: 9px;
+    color: var(--rose);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mini-summary {
+    background: linear-gradient(135deg, var(--blush), var(--champagne));
+    border: 1.5px solid rgba(232,68,90,0.15);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--burgundy);
+    line-height: 1.9;
+    width: 100%;
+  }
+
+  .about-blurb {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.65;
+    margin-bottom: 26px;
+    padding: 0 4px;
+  }
+
+  .about-blurb strong { color: var(--rose); font-style: normal; }
+
+  .question-box {
+    background: linear-gradient(135deg, var(--blush) 0%, var(--champagne) 100%);
+    border-radius: 18px;
+    padding: 36px 32px;
+    margin-bottom: 36px;
+    border: 1.5px solid rgba(232,68,90,0.15);
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .question-text em { color: var(--rose); font-style: italic; }
+
+  .btn-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 40px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.2);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover::after { opacity: 1; }
+  .btn:hover { transform: translateY(-3px) scale(1.04); }
+  .btn:active { transform: translateY(0) scale(0.97); }
+
+  .btn-yes {
+    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+    color: white;
+    box-shadow: 0 8px 30px rgba(232,68,90,0.4);
+  }
+
+  .btn-no {
+    background: white;
+    color: var(--text);
+    border: 2px solid var(--rose-light);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+
+  .btn-no:hover { border-color: var(--rose); }
+
+  /* NO screens */
+  .no-screen-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 80px rgba(232,68,90,0.15), 0 4px 20px rgba(0,0,0,0.06);
+    padding: 52px 44px 46px;
+    text-align: center;
+    border: 1px solid rgba(232,68,90,0.1);
+    width: 100%;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .big-emoji {
+    font-size: 60px;
+    margin-bottom: 20px;
+    display: block;
+    animation: wobble 0.6s ease;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg) scale(1.1); }
+    75% { transform: rotate(10deg) scale(1.1); }
+  }
+
+  .no-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 42px);
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .no-heading .highlight { color: var(--rose); font-style: italic; }
+
+  .confession-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .flex-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .mini-card {
+    background: var(--blush);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-align: left;
+    border: 1.5px solid rgba(232,68,90,0.12);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .mini-card .icon { font-size: 26px; flex-shrink: 0; }
+
+  .mini-card .mini-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .mini-card .mini-sub {
+    font-size: 12px;
+    color: var(--rose);
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 3px;
+  }
+
+  .btn-wiggle { animation: wiggle 0.5s ease; }
+
+  @keyframes wiggle {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px) rotate(-3deg); }
+    40% { transform: translateX(10px) rotate(3deg); }
+    60% { transform: translateX(-8px) rotate(-2deg); }
+    80% { transform: translateX(8px) rotate(2deg); }
+  }
+
+  /* YES screen */
+  .yes-card {
+    background: linear-gradient(135deg, #fff5f7, white);
+    border-radius: 24px;
+    box-shadow: 0 30px 100px rgba(232,68,90,0.25);
+    padding: 60px 50px;
+    text-align: center;
+    border: 2px solid var(--rose-light);
+    width: 100%;
+    animation: celebrateIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes celebrateIn {
+    0% { opacity: 0; transform: scale(0.7) rotate(-3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .confetti-burst {
+    font-size: 44px;
+    display: block;
+    margin-bottom: 20px;
+    animation: burst 0.8s ease forwards;
+  }
+
+  @keyframes burst {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  .yes-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 7vw, 62px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--rose), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+
+  .yes-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .date-details {
+    background: var(--blush);
+    border-radius: 18px;
+    padding: 28px 30px;
+    margin-bottom: 28px;
+    border: 1.5px dashed var(--rose-light);
+  }
+
+  .date-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--text);
+    border-bottom: 1px solid rgba(232,68,90,0.1);
+    text-align: left;
+  }
+
+  .date-row:last-child { border-bottom: none; }
+  .date-row .icon { font-size: 20px; flex-shrink: 0; }
+  .date-row strong { font-weight: 600; }
+
+  .footer-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--rose);
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .corner-rose { position: absolute; font-size: 48px; opacity: 0.12; pointer-events: none; }
+  .corner-rose.tl { top: 16px; left: 16px; transform: rotate(-20deg); }
+  .corner-rose.tr { top: 16px; right: 16px; transform: rotate(20deg); }
+  .corner-rose.bl { bottom: 16px; left: 16px; transform: rotate(15deg); }
+  .corner-rose.br { bottom: 16px; right: 16px; transform: rotate(-15deg); }
+
+  .bg-deco { position: fixed; pointer-events: none; z-index: 0; }
+  .bg-circle { border-radius: 50%; position: absolute; opacity: 0.06; }
+
+  @media (max-width: 480px) {
+    .card, .no-screen-card, .yes-card { padding: 40px 24px 36px; }
+    .btn { padding: 14px 26px; font-size: 15px; }
+    .talent-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="petals"></div>
+
+<div class="bg-deco" style="inset:0; overflow:hidden;">
+  <div class="bg-circle" style="width:500px;height:500px;background:var(--rose);top:-200px;left:-150px;"></div>
+  <div class="bg-circle" style="width:400px;height:400px;background:var(--gold);bottom:-150px;right:-100px;"></div>
+</div>
+
+<div class="scene">
+
+  <!-- SCREEN 1: The Ask -->
+  <div class="screen active" id="screen1">
+    <div class="envelope-wrapper" style="animation-delay:0.2s;">
+      <div class="card">
+        <span class="corner-rose tl">🌹</span>
+        <span class="corner-rose tr">💌</span>
+        <span class="corner-rose bl">✨</span>
+        <span class="corner-rose br">🌹</span>
+
+        <div class="hearts-row">
+          <span class="heart">❤️</span>
+          <span class="heart">🌹</span>
+          <span class="heart">❤️</span>
+        </div>
+
+        <p class="label">A Special Invitation</p>
+        <h1 class="main-heading">
+          Hey,<br><span>Kaia</span> ✨
+        </h1>
+        <p class="subtitle">Anything to make you blushhh</p>
+
+        <p class="about-blurb">
+          A guy who can <strong>go to therapy for you</strong>, believes in <strong>acts of service</strong>,
+          loves dogs 🐾 & would be your reason to tell your younger self —
+          <strong>everything happens for a reason.</strong>
+        </p>
+
+        <div class="question-box">
+          <p class="question-text">
+            Would you like to go on a<br>
+            <em>date</em> with me? 🌹
+          </p>
+        </div>
+
+        <div class="btn-row" style="margin-bottom: 26px;">
+          <button class="btn btn-yes" onclick="goYes()">YESSS 💗</button>
+          <button class="btn btn-no" id="noBtn1" onclick="noClick1()">No... 🤔</button>
+        </div>
+
+        <!-- Small summary box -->
+        <div class="mini-summary">
+          🎤 I sing &nbsp;·&nbsp; 🎸 I play guitar &nbsp;·&nbsp; 🕺 I dance sometimes<br>
+          🏋️ I love gym &nbsp;·&nbsp; 🌹 I'll bring you flowers everytimee
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: "I made this website" -->
+  <div class="screen" id="screen2">
+    <div class="no-screen-card">
+      <span class="big-emoji">😤</span>
+      <h2 class="no-heading">Wait — <span class="highlight">I built this<br>entire website</span> for you!</h2>
+      <p class="confession-text">Line by line... just for you, Kaia.</p>
+
+      <div class="flex-cards">
+        <div class="mini-card">
+          <span class="icon">💻</span>
+          <div>
+            <div class="mini-text">HTML. CSS. JavaScript. All coded.</div>
+            <div class="mini-sub">That's devotion right there...</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🌸</span>
+          <div>
+            <div class="mini-text">Even the falling petals are custom animated — for you.</div>
+            <div class="mini-sub">Every. Single. Petal.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-yes" onclick="goYes()">Okay fine, YES 💞</button>
+        <button class="btn btn-no" id="noBtn2" onclick="noClick2()">No way 🙅‍♀️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: "I give the best hugs & I love gym" -->
+  <div class="screen" id="screen3">
+    <div class="no-screen-card">
+      <span class="big-emoji">🤗</span>
+      <h2 class="no-heading"><span class="highlight">I give the best hugs</span><br>& I love the gym<br>just like youuu 🏋️</h2>
+      <p class="confession-text">We could literally train together... imagine that.</p>
+
+      <div class="flex-cards">
+        <div class="mini-card">
+          <span class="icon">💪</span>
+          <div>
+            <div class="mini-text">I give the absolute best hugs</div>
+            <div class="mini-sub">You'll never want to let go, promise.</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🌹</span>
+          <div>
+            <div class="mini-text">Fresh Flowers for you always</div>
+            <div class="mini-sub">You mentioned flowers & nails — I notice things 😌</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🐾</span>
+          <div>
+            <div class="mini-text">I'll cuddle your doggies too.</div>
+            <div class="mini-sub">Acts of service extend to pets. Obviously.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-yes" onclick="goYes()">This actually sounds amazing 🥰</button>
+        <button class="btn btn-no" id="noBtn3" onclick="noClick3()">NOOO 😭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: "I am your reason" -->
+  <div class="screen" id="screen4">
+    <div class="no-screen-card">
+      <span class="big-emoji">🎸</span>
+      <h2 class="no-heading">I might be <span class="highlight">your reason</span><br>to tell your<br>younger selff!! 🌸</h2>
+      <p class="confession-text">I promise to make you smile and blushh.</p>
+
+      <div class="flex-cards">
+        <div class="mini-card">
+          <span class="icon">🌸</span>
+          <div>
+            <div class="mini-text">I promise to make you smile and blushh</div>
+            <div class="mini-sub">Every single day, Kaia.</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🎸</span>
+          <div>
+            <div class="mini-text">I sing, play guitar & dance (ok ig 😅)</div>
+            <div class="mini-sub">Serenading is absolutely on the table.</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🌍</span>
+          <div>
+            <div class="mini-text">Toronto. Same city. Same vibe.</div>
+            <div class="mini-sub">It was written, Kaia. It literally was written.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-yes" onclick="goYes()">I am your reason — YESSS 💗</button>
+        <button class="btn btn-no" id="noBtn4" onclick="noClick4()">NOOO 😭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN YES -->
+  <div class="screen" id="screenYes">
+    <div class="yes-card">
+      <span class="confetti-burst">🎊🌹🎉</span>
+      <h2 class="yes-heading">She said YES!</h2>
+      <p class="yes-sub">The website actually worked... 😭✨</p>
+
+      <div class="date-details">
+        <div class="date-row">
+          <span class="icon">📍</span>
+          <span>Somewhere beautiful in <strong>Toronto</strong></span>
+        </div>
+        <div class="date-row">
+          <span class="icon">🌹</span>
+          <span>Flowers — recommend me your favourite oness</span>
+        </div>
+        <div class="date-row">
+          <span class="icon">🎸</span>
+          <span>We can write a song and sing together?</span>
+        </div>
+        <div class="date-row">
+          <span class="icon">🏋️</span>
+          <span>Gym date? 100% on the table</span>
+        </div>
+        <div class="date-row">
+          <span class="icon">🤗</span>
+          <span>Best hugs. Always.</span>
+        </div>
+        <div class="date-row">
+          <span class="icon">💌</span>
+          <span>The reason might be uss 🌸</span>
+        </div>
+      </div>
+
+      <p class="footer-note">See you soon, Kaia 🌹</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const petalsContainer = document.getElementById('petals');
+  const petalEmojis = ['🌸', '🌹', '💕', '✨', '🌺'];
+
+  function createPetal() {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    petal.style.left = Math.random() * 100 + 'vw';
+    petal.style.fontSize = (12 + Math.random() * 16) + 'px';
+    petal.style.animationDuration = (4 + Math.random() * 6) + 's';
+    petal.style.animationDelay = Math.random() * 4 + 's';
+    petalsContainer.appendChild(petal);
+    setTimeout(() => petal.remove(), 10000);
+  }
+
+  setInterval(createPetal, 600);
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function noClick1() {
+    const btn = document.getElementById('noBtn1');
+    btn.classList.add('btn-wiggle');
+    setTimeout(() => { btn.classList.remove('btn-wiggle'); showScreen('screen2'); }, 500);
+  }
+
+  function noClick2() {
+    const btn = document.getElementById('noBtn2');
+    btn.classList.add('btn-wiggle');
+    setTimeout(() => { btn.classList.remove('btn-wiggle'); showScreen('screen3'); }, 500);
+  }
+
+  function noClick3() {
+    const btn = document.getElementById('noBtn3');
+    btn.classList.add('btn-wiggle');
+    setTimeout(() => { btn.classList.remove('btn-wiggle'); showScreen('screen4'); }, 500);
+  }
+
+  function noClick4() {
+    const btn = document.getElementById('noBtn4');
+    btn.classList.add('btn-wiggle');
+    setTimeout(() => { btn.classList.remove('btn-wiggle'); showScreen('screen1'); }, 500);
+  }
+
+  function goYes() {
+    for (let i = 0; i < 15; i++) setTimeout(createPetal, i * 80);
+    showScreen('screenYes');
+  }
+</script>
+</body>
+</html>
